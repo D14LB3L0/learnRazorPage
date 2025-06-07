@@ -1,5 +1,38 @@
 ﻿@page
+@using razorPage.Models
 @model razorPage.Pages.BookModel
 @{
 	<h1>Books page</h1>
+
+	<form method="post">
+		<input type="number" name="id" />
+		<input type="text" name="title" />
+		<input type="text" name="description" />
+		<input type="text" name="author" />
+
+		<button type="submit">Add</button>
+	</form>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Author</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@foreach (Book book in Model.Books)
+			{
+				<tr>
+					<td>@book.Id</td>
+					<td>@book.Title</td>
+					<td>@book.Description</td>
+					<td>@book.Author</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 }
