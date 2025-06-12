@@ -26,13 +26,44 @@
 		<tbody>
 			@foreach (Book book in Model.Books)
 			{
-				<tr>
+				<tr id="row-@book.Id">
 					<td>@book.Id</td>
-					<td>@book.Title</td>
-					<td>@book.Description</td>
-					<td>@book.Author</td>
+
+					<td>
+						<span class="display">@book.Title</span>
+						<input class="edit-input d-none" name="title" value="@book.Title" />
+					</td>
+
+					<td>
+						<span class="display">@book.Description</span>
+						<input class="edit-input d-none" name="description" value="@book.Description" />
+					</td>
+					
+					<td>
+						<span class="display">@book.Author</span>
+						<input class="edit-input d-none" name="author" value="@book.Author" />
+					</td>
+
+					<td>
+						<button type="button" onclick="enableEdit(@book.Id)">Editar</button>
+						<button type="button" class="d-none" onclick="confirmEdit(@book.Id)">Confirmar</button>
+						<button type="button" class="d-none" onclick="cancelEdit(@book.Id)">Cancelar</button>
+					</td>
+
+					<td>
+						<form method="post" asp-page-handler="Delete">
+							@Html.AntiForgeryToken()
+							<input type="hidden" name="id" value="@book.Id" />
+							<button type="submit">Eliminar</button>
+						</form>
+					</td>
+
 				</tr>
 			}
 		</tbody>
 	</table>
+}
+
+@section Scripts {
+	<script src="~/js/books.js" asp-append-version="true"></script>
 }

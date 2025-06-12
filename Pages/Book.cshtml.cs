@@ -13,6 +13,9 @@ namespace razorPage.Pages
         [BindProperty]
         public Book NewBook { get; set; }
 
+        [BindProperty]
+        public Book EditableBook { get; set; }
+
         public BookModel(MyDbContext context)
         {
             _context = context;
@@ -30,6 +33,33 @@ namespace razorPage.Pages
             _context.SaveChanges();
 
             return RedirectToPage();
+        }
+
+        public IActionResult OnPostDelete(int id)
+        {
+            var book = _context.Book.Find(id);
+
+            if (book == null)
+                return NotFound();
+
+            _context.Book.Remove(book);
+            _context.SaveChanges();
+
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostEdit([FromBody] Book editedBook)
+        {
+            var book = _context.Book.Find(editedBook.Id);
+            if (book == null) return NotFound();
+
+            book.Title = editedBook.Title;
+            book.Description = editedBook.Description;
+            book.Author = editedBook.Author;
+
+            _context.SaveChanges();
+
+            return new JsonResult(new { success = true });
         }
     }
 }
